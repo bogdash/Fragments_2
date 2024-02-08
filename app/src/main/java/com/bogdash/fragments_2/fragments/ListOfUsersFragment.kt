@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bogdash.fragments_2.MainActivity
 import com.bogdash.fragments_2.R
 import com.bogdash.fragments_2.RecyclerViewAdapter
 import com.bogdash.fragments_2.UserData

@@ -18,6 +18,7 @@ class DetailFragment : Fragment() {
     }
 
     companion object {
+        const val DETAIL_FRAGMENT_TAG = "DETAIL_FRAGMENT_TAG"
 
         fun newInstance() = DetailFragment()
     }

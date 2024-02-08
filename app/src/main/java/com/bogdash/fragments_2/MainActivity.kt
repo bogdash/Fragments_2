@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.commit
 import com.bogdash.fragments_2.databinding.ActivityMainBinding
+import com.bogdash.fragments_2.fragments.DetailFragment
 import com.bogdash.fragments_2.fragments.ListOfUsersFragment
 
 class MainActivity : AppCompatActivity() {
@@ -22,6 +23,13 @@ class MainActivity : AppCompatActivity() {
                 )
                 addToBackStack(ListOfUsersFragment.LIST_OF_USERS_FRAGMENT_TAG)
             }
+        }
+    }
+
+    fun onClick() {
+        supportFragmentManager.commit{
+            replace(R.id.fragment_container_view, DetailFragment.newInstance(), DetailFragment.DETAIL_FRAGMENT_TAG)
+            addToBackStack(DetailFragment.DETAIL_FRAGMENT_TAG)
         }
     }
 

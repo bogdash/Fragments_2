@@ -23,6 +23,10 @@ class RecyclerViewAdapter(private val userList: ArrayList<UserData>) : RecyclerV
             firstName.text = currentItem.firstName
             lastName.text = currentItem.lastName
             phone.text = currentItem.phone
+
+            itemView.setOnClickListener {
+                (itemView.context as? MainActivity)?.onClick()
+            }
         }
     }
 
