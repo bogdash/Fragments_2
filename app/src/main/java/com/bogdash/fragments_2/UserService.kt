@@ -6,7 +6,7 @@ class UserService(private val _context: Context) {
     private val context: Context = _context
 
     fun getUser(): ArrayList<UserData> {
-        val userArrayList = arrayListOf<UserData>()
+        val users = arrayListOf<UserData>()
 
         val photoId = arrayOf(
             R.drawable.photo_1,
@@ -20,10 +20,10 @@ class UserService(private val _context: Context) {
         val phoneId = arrayOf("8 965 786 54 56","8 865 566 54 56", "8 965 456 54 32", "8 123 786 54 32")
 
         for (i in photoId.indices) {
-            val user = UserData(photoId[i], firstNameId[i], lastNameId[i], phoneId[i])
-            userArrayList.add(user)
+            val user = UserData(i, photoId[i], firstNameId[i], lastNameId[i], phoneId[i])
+            users.add(user)
         }
 
-        return userArrayList
+        return users
     }
 }

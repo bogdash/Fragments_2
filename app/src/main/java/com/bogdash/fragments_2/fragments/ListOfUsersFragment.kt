@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bogdash.fragments_2.MainActivity
 import com.bogdash.fragments_2.R
 import com.bogdash.fragments_2.RecyclerViewAdapter
 import com.bogdash.fragments_2.UserData
@@ -46,6 +45,11 @@ class ListOfUsersFragment : Fragment() {
 
     companion object {
         const val LIST_OF_USERS_FRAGMENT_TAG = "LIST_OF_USERS_FRAGMENT_TAG"
+        const val FIRST_NAME_KEY = "MESSAGE_KEY"
+        const val LAST_NAME_KEY = "LAST_NAME_KEY"
+        const val PHONE_KEY = "PHONE_KEY"
+        const val PHOTO_KEY = "PHOTO_KEY"
+
         fun newInstance() = ListOfUsersFragment()
     }
 }
