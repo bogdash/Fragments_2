@@ -2,7 +2,6 @@ package com.bogdash.fragments_2
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.bogdash.fragments_2.databinding.ActivityMainBinding
 import com.bogdash.fragments_2.fragments.DetailFragment
@@ -19,7 +18,7 @@ class MainActivity : AppCompatActivity(), Router {
             supportFragmentManager.commit {
                 replace(
                     R.id.fragment_container_view,
-                    ListOfUsersFragment.newInstance(),
+                    ListOfUsersFragment(),
                     ListOfUsersFragment.LIST_OF_USERS_FRAGMENT_TAG
                 )
                 addToBackStack(ListOfUsersFragment.LIST_OF_USERS_FRAGMENT_TAG)
@@ -27,19 +26,10 @@ class MainActivity : AppCompatActivity(), Router {
         }
     }
 
-    private fun sendResultToDetailFragment(resultBundle: Bundle? ) {
-        resultBundle?.let {
-            supportFragmentManager.setFragmentResult(DetailFragment.DETAIL_FRAGMENT_TAG,
-                it
-            )
-        }
-    }
-
-    override fun showDetailFragment(bundle: Bundle?) {
-        sendResultToDetailFragment(bundle)
-        val detailFragment = bundle?.let { DetailFragment.newInstance(it) } as Fragment
-        supportFragmentManager.commit{
-            replace(R.id.fragment_container_view, detailFragment, DetailFragment.DETAIL_FRAGMENT_TAG)
+    override fun showDetailFragmentFor(user: UserData) {
+        val detailFragment = DetailFragment(user)
+        supportFragmentManager.commit {
+            add(R.id.fragment_container_view, detailFragment, DetailFragment.DETAIL_FRAGMENT_TAG)
             addToBackStack(DetailFragment.DETAIL_FRAGMENT_TAG)
         }
     }

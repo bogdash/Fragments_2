@@ -1,47 +1,45 @@
 package com.bogdash.fragments_2
 
-import android.os.Bundle
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bogdash.fragments_2.fragments.ListOfUsersFragment
 
-class RecyclerViewAdapter(private val userList: ArrayList<UserData>) : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
+class RecyclerViewAdapter(private val users: ArrayList<UserData>) :
+    RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): RecyclerViewAdapter.ViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
+        val itemView =
+            LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
         return ViewHolder(itemView)
     }
 
     override fun onBindViewHolder(holder: RecyclerViewAdapter.ViewHolder, position: Int) {
-        val currentItem = userList[position]
+        val user = users[position]
         with(holder) {
-            photo.setImageResource(currentItem.photo)
-            firstName.text = currentItem.firstName
-            lastName.text = currentItem.lastName
-            phone.text = currentItem.phone
+            photo.setImageResource(user.photo)
+            firstName.text = user.firstName
+            lastName.text = user.lastName
+            phone.text = user.phone
 
-            val bundle = Bundle().apply {
-                putString(ListOfUsersFragment.FIRST_NAME_KEY, currentItem.firstName)
-                putString(ListOfUsersFragment.LAST_NAME_KEY, currentItem.lastName)
-                putString(ListOfUsersFragment.PHONE_KEY, currentItem.phone)
-                putInt(ListOfUsersFragment.PHOTO_KEY, currentItem.photo)
-            }
             itemView.setOnClickListener {
-                (itemView.context as? MainActivity)?.showDetailFragment(bundle)
+                (itemView.context as? MainActivity)?.showDetailFragmentFor(user)
             }
         }
     }
 
-
-
     override fun getItemCount(): Int {
-        return userList.size
+        return users.size
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateUser() {
+        notifyDataSetChanged()
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

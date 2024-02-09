@@ -7,4 +7,5 @@
     <string name="lastname">Фамилия</string>
     <string name="phone">Телефон</string>
     <string name="cancel">Отмена</string>
+    <string name="updateRequestKey">update</string>
 </resources>

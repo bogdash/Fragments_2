@@ -5,16 +5,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.setFragmentResultListener
+import androidx.fragment.app.setFragmentResult
+import com.bogdash.fragments_2.R
+import com.bogdash.fragments_2.UserData
 import com.bogdash.fragments_2.databinding.FragmentDetailBinding
 
-class DetailFragment : Fragment() {
+class DetailFragment(
+    private val user: UserData
+) : Fragment() {
     private lateinit var binding: FragmentDetailBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentDetailBinding.inflate(inflater)
         return binding.root
     }
@@ -22,31 +26,29 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val firstName = arguments?.getString(FIRST_NAME_KEY)
-        val lastName = arguments?.getString(LAST_NAME_KEY)
-        val phone = arguments?.getString(PHONE_KEY)
-        val photo = arguments?.getInt(PHOTO_KEY)
-
         with(binding) {
-            tilFirstname.editText?.setText(firstName)
-            tilLastname.editText?.setText(lastName)
-            edPhone.setText(phone)
-            ivPhotoUser.setImageResource(photo!!)
+            tiedFirstname.setText(user.firstName)
+            tiedLastname.setText(user.lastName)
+            edPhone.setText(user.phone)
+            ivPhotoUser.setImageResource(user.photo)
 
             btnEdit.setOnClickListener {
+                user.firstName = tiedFirstname.text.toString()
+                user.lastName = tiedLastname.text.toString()
+                user.phone = edPhone.text.toString()
 
+                setFragmentResult(getString(R.string.updateRequestKey), Bundle())
+
+                requireActivity().supportFragmentManager.popBackStack()
+            }
+
+            btnCancel.setOnClickListener {
+                requireActivity().supportFragmentManager.popBackStack()
             }
         }
     }
 
-
     companion object {
-        const val FIRST_NAME_KEY = "MESSAGE_KEY"
         const val DETAIL_FRAGMENT_TAG = "DETAIL_FRAGMENT_TAG"
-        const val LAST_NAME_KEY = "LAST_NAME_KEY"
-        const val PHONE_KEY = "PHONE_KEY"
-        const val PHOTO_KEY = "PHOTO_KEY"
-
-        fun newInstance(bundle: Bundle) = DetailFragment().apply { arguments = bundle }
     }
 }
