@@ -1,8 +1,8 @@
 package com.bogdash.fragments_2.fragments
 
 import android.app.Activity
-import android.app.Instrumentation.ActivityResult
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.fragment.app.Fragment
@@ -10,18 +10,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.setFragmentResult
 import com.bogdash.fragments_2.R
 import com.bogdash.fragments_2.UserData
 import com.bogdash.fragments_2.databinding.FragmentDetailBinding
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 
 class DetailFragment(
     private val user: UserData
 ) : Fragment() {
     private lateinit var binding: FragmentDetailBinding
-
+    private var selectedImageUri: Uri? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,7 +38,10 @@ class DetailFragment(
             tiedFirstname.setText(user.firstName)
             tiedLastname.setText(user.lastName)
             edPhone.setText(user.phone)
-            ivPhotoUser.setImageResource(user.photo)
+            Glide.with(requireContext())
+                .load(user.imageUrl)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(ivPhotoUser)
 
             ivPhotoUser.setOnClickListener{
                 Toast.makeText(requireContext(), "hi", Toast.LENGTH_SHORT).show()
@@ -50,7 +54,11 @@ class DetailFragment(
                 user.lastName = tiedLastname.text.toString()
                 user.phone = edPhone.text.toString()
 
-                setFragmentResult(getString(R.string.updateRequestKey), Bundle())
+                val bundle = Bundle()
+                selectedImageUri?.let { uri ->
+                    bundle.putString("imageKey", uri.toString())
+                }
+                setFragmentResult(getString(R.string.updateRequestKey), bundle)
 
                 requireActivity().supportFragmentManager.popBackStack()
             }
@@ -64,8 +72,11 @@ class DetailFragment(
     private val pickImage = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val data: Intent? = result.data
-            val selectedImageUri = data?.data
-            binding.ivPhotoUser.setImageURI(selectedImageUri)
+            selectedImageUri = data?.data
+            Glide.with(requireContext())
+                .load(selectedImageUri)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(binding.ivPhotoUser)
         }
     }
 

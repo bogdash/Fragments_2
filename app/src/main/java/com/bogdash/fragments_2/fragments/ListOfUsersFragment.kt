@@ -1,5 +1,6 @@
 package com.bogdash.fragments_2.fragments
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -30,8 +31,14 @@ class ListOfUsersFragment : Fragment() {
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = RecyclerViewAdapter(UserService.getUsers())
 
-        setFragmentResultListener(getString(R.string.updateRequestKey)) { _, _ ->
-            (recyclerView.adapter as RecyclerViewAdapter).updateUser()
+        setFragmentResultListener(getString(R.string.updateRequestKey)) { _, bundle ->
+            val imageUriString = bundle.getString("imageKey")
+            val imageUri = imageUriString?.let { Uri.parse(it) }
+
+            imageUri?.let{
+                (recyclerView.adapter as RecyclerViewAdapter).updateUserImage(it)
+                (recyclerView.adapter as RecyclerViewAdapter).updateUser()
+            }
         }
     }
 
