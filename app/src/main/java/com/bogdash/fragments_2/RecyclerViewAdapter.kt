@@ -27,7 +27,7 @@ class RecyclerViewAdapter(private val users: ArrayList<UserData>) :
         with(holder) {
             Glide.with(itemView)
                 .load(user.imageUrl)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(photo)
             firstName.text = user.firstName
             lastName.text = user.lastName
@@ -45,16 +45,16 @@ class RecyclerViewAdapter(private val users: ArrayList<UserData>) :
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateUserImage(imageUri: Uri) {
+        val imageUriString = imageUri.toString()
+
         val position = users.indexOfFirst { user ->
-            user.imageUrl == imageUri.toString()
+            user.imageUrl == imageUriString
         }
         if (position != -1) {
-            users[position].imageUrl = imageUri.toString()
+            users[position].imageUrl = imageUriString
             notifyItemChanged(position)
             notifyDataSetChanged()
-        } else {
         }
-
     }
 
     @SuppressLint("NotifyDataSetChanged")

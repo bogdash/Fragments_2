@@ -39,7 +39,7 @@ class DetailFragment(
             edPhone.setText(user.phone)
             Glide.with(requireContext())
                 .load(user.imageUrl)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(ivPhotoUser)
 
             ivPhotoUser.setOnClickListener {
@@ -55,7 +55,8 @@ class DetailFragment(
 
                 val bundle = Bundle()
                 selectedImageUri?.let { uri ->
-                    bundle.putString(IMAGE_KEY, uri.toString())
+                    val uriString = uri.toString()
+                    bundle.putString(IMAGE_KEY, uriString)
                 }
                 setFragmentResult(getString(R.string.updateRequestKey), bundle)
 
@@ -75,8 +76,12 @@ class DetailFragment(
                 selectedImageUri = data?.data
                 Glide.with(requireContext())
                     .load(selectedImageUri)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(binding.ivPhotoUser)
+
+                selectedImageUri?.let {
+                    user.imageUrl = it.toString()
+                }
             }
         }
 
