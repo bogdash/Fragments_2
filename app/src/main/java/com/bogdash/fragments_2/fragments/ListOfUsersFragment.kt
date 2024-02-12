@@ -32,17 +32,16 @@ class ListOfUsersFragment : Fragment() {
         recyclerView.adapter = RecyclerViewAdapter(UserService.getUsers())
 
         setFragmentResultListener(getString(R.string.updateRequestKey)) { _, bundle ->
-            val imageUriString = bundle.getString("imageKey")
+            val imageUriString = bundle.getString(IMAGE_KEY)
             val imageUri = imageUriString?.let { Uri.parse(it) }
 
-            imageUri?.let{
-                (recyclerView.adapter as RecyclerViewAdapter).updateUserImage(it)
-                (recyclerView.adapter as RecyclerViewAdapter).updateUser()
-            }
+            imageUri?.let { (recyclerView.adapter as RecyclerViewAdapter).updateUserImage(it) }
+            (recyclerView.adapter as RecyclerViewAdapter).updateUser()
         }
     }
 
     companion object {
         const val LIST_OF_USERS_FRAGMENT_TAG = "LIST_OF_USERS_FRAGMENT_TAG"
+        const val IMAGE_KEY = "IMAGE_KEY"
     }
 }

@@ -25,7 +25,6 @@ class RecyclerViewAdapter(private val users: ArrayList<UserData>) :
     override fun onBindViewHolder(holder: RecyclerViewAdapter.ViewHolder, position: Int) {
         val user = users[position]
         with(holder) {
-//            photo.setImageResource(user.photo)
             Glide.with(itemView)
                 .load(user.imageUrl)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -40,6 +39,10 @@ class RecyclerViewAdapter(private val users: ArrayList<UserData>) :
         }
     }
 
+    override fun getItemCount(): Int {
+        return users.size
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     fun updateUserImage(imageUri: Uri) {
         val position = users.indexOfFirst { user ->
@@ -49,10 +52,9 @@ class RecyclerViewAdapter(private val users: ArrayList<UserData>) :
             users[position].imageUrl = imageUri.toString()
             notifyItemChanged(position)
             notifyDataSetChanged()
+        } else {
         }
-    }
-    override fun getItemCount(): Int {
-        return users.size
+
     }
 
     @SuppressLint("NotifyDataSetChanged")

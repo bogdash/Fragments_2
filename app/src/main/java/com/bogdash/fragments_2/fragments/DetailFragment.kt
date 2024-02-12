@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.setFragmentResult
 import com.bogdash.fragments_2.R
@@ -43,9 +42,9 @@ class DetailFragment(
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(ivPhotoUser)
 
-            ivPhotoUser.setOnClickListener{
-                Toast.makeText(requireContext(), "hi", Toast.LENGTH_SHORT).show()
-                val pickImageIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            ivPhotoUser.setOnClickListener {
+                val pickImageIntent =
+                    Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
                 pickImage.launch(pickImageIntent)
             }
 
@@ -56,7 +55,7 @@ class DetailFragment(
 
                 val bundle = Bundle()
                 selectedImageUri?.let { uri ->
-                    bundle.putString("imageKey", uri.toString())
+                    bundle.putString(IMAGE_KEY, uri.toString())
                 }
                 setFragmentResult(getString(R.string.updateRequestKey), bundle)
 
@@ -69,18 +68,20 @@ class DetailFragment(
         }
     }
 
-    private val pickImage = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val data: Intent? = result.data
-            selectedImageUri = data?.data
-            Glide.with(requireContext())
-                .load(selectedImageUri)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(binding.ivPhotoUser)
+    private val pickImage =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data: Intent? = result.data
+                selectedImageUri = data?.data
+                Glide.with(requireContext())
+                    .load(selectedImageUri)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(binding.ivPhotoUser)
+            }
         }
-    }
 
     companion object {
         const val DETAIL_FRAGMENT_TAG = "DETAIL_FRAGMENT_TAG"
+        const val IMAGE_KEY = "IMAGE_KEY"
     }
 }
